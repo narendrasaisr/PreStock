@@ -1,0 +1,6 @@
+{
+  "name": "Grocery Predictor",
+  "description": "ML-powered grocery replenishment predictor connecting to quick delivery apps like Zepto, Blinkit, Swiggy Instamart, and Amazon Fresh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
