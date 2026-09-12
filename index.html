@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Grocery Predictor & Quick Commerce</title>
+  <title>Grocery Predictor & Quick Commerce Aggregator</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
@@ -58,7 +58,7 @@
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .glass-card-interactive:hover {
-      border-color: rgba(16, 185, 129, 0.3);
+      border-color: rgba(16, 185, 129, 0.35);
       transform: translateY(-1px);
     }
     .custom-scroll::-webkit-scrollbar {
@@ -75,7 +75,7 @@
 
   <!-- Top Navigation Bar -->
   <header class="sticky top-0 z-40 bg-[#0B1315]/90 backdrop-blur-md border-b border-white/10 px-4 py-3">
-    <div class="max-w-5xl mx-auto flex items-center justify-between">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center shadow-lg shadow-brand-500/20">
           <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
@@ -83,18 +83,22 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="font-bold text-lg text-white leading-tight">Grocery Predictor</h1>
-            <span class="text-[10px] font-semibold uppercase tracking-wider bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full border border-brand-500/30">ML Auto-Fill</span>
+            <span class="text-[10px] font-semibold uppercase tracking-wider bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full border border-brand-500/30">Live Commerce Sourced</span>
           </div>
-          <p class="text-xs text-gray-400">Zepto • Blinkit • Instamart • Amazon</p>
+          <p class="text-xs text-gray-400">Zepto • Blinkit • Instamart • Amazon Fresh</p>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
+        <button id="open-catalog-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/15 text-white text-xs font-semibold rounded-lg border border-white/10 transition">
+          <i data-lucide="store" class="w-4 h-4 text-emerald-400"></i>
+          <span class="hidden sm:inline">Store Aisles</span>
+        </button>
         <button id="open-add-modal-btn" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/15 text-white text-xs font-semibold rounded-lg border border-white/10 transition">
           <i data-lucide="plus" class="w-4 h-4 text-brand-400"></i>
-          <span>Add Item</span>
+          <span>Custom Item</span>
         </button>
-        <button id="header-basket-btn" class="relative flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-brand-600/30 transition">
+        <button id="header-basket-btn" class="relative flex items-center gap-1.5 px-3.5 py-1.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-brand-600/30 transition">
           <i data-lucide="shopping-cart" class="w-4 h-4"></i>
           <span>Basket</span>
           <span id="basket-badge-count" class="bg-white text-brand-900 font-extrabold text-[10px] px-1.5 py-0.2 rounded-full min-w-[18px] text-center">0</span>
@@ -104,16 +108,19 @@
   </header>
 
   <!-- Main Container -->
-  <main class="max-w-5xl mx-auto px-4 pt-4">
+  <main class="max-w-6xl mx-auto px-4 pt-4">
 
-    <!-- Household Consumption & Surge Controls -->
+    <!-- Quick Commerce Source & Velocity Calibration Banner -->
     <div class="glass-card rounded-2xl p-4 mb-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <span class="text-xs font-semibold text-brand-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Predictive Model Calibration
-          </span>
-          <h2 class="text-sm font-semibold text-white mt-0.5">Household Depletion Velocity Multiplier</h2>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-brand-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Hyperlocal Predictive Engine
+            </span>
+            <span class="text-[10px] bg-white/10 text-gray-300 px-2 py-0.5 rounded-md font-mono">Catalog: <span id="total-groceries-count">36</span> Items</span>
+          </div>
+          <h2 class="text-sm font-semibold text-white mt-0.5">Household Depletion Velocity & Sourcing Feeds</h2>
         </div>
 
         <div class="flex flex-wrap items-center gap-3">
@@ -134,47 +141,121 @@
       </div>
     </div>
 
-    <!-- Active Screen Views -->
-
     <!-- VIEW 1: PANTRY (STOCK METERS & PREDICTIONS) -->
     <div id="view-pantry" class="view-panel">
       
-      <!-- Filter Chips & Search -->
+      <!-- Sourcing Store Filter Tabs -->
+      <div class="flex items-center gap-2 overflow-x-auto custom-scroll pb-2 mb-3 text-xs">
+        <span class="text-gray-400 text-[11px] font-semibold uppercase tracking-wider shrink-0 flex items-center gap-1">
+          <i data-lucide="map-pin" class="w-3 h-3 text-emerald-400"></i> Source:
+        </span>
+        <button class="platform-filter px-3 py-1 rounded-lg bg-white/20 text-white font-medium whitespace-nowrap transition" data-platform="all">
+          All Stores (<span id="count-platform-all">0</span>)
+        </button>
+        <button class="platform-filter px-3 py-1 rounded-lg bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/30 font-medium whitespace-nowrap transition" data-platform="Zepto">
+          ⚡ Zepto (9m) (<span id="count-platform-zepto">0</span>)
+        </button>
+        <button class="platform-filter px-3 py-1 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 text-amber-300 border border-amber-500/30 font-medium whitespace-nowrap transition" data-platform="Blinkit">
+          ⚡ Blinkit (11m) (<span id="count-platform-blinkit">0</span>)
+        </button>
+        <button class="platform-filter px-3 py-1 rounded-lg bg-orange-950/40 hover:bg-orange-900/50 text-orange-300 border border-orange-500/30 font-medium whitespace-nowrap transition" data-platform="Swiggy Instamart">
+          ⚡ Instamart (14m) (<span id="count-platform-swiggy">0</span>)
+        </button>
+        <button class="platform-filter px-3 py-1 rounded-lg bg-sky-950/40 hover:bg-sky-900/50 text-sky-300 border border-sky-500/30 font-medium whitespace-nowrap transition" data-platform="Amazon Fresh">
+          📦 Amazon Fresh (2h) (<span id="count-platform-amazon">0</span>)
+        </button>
+      </div>
+
+      <!-- Category Aisles Row -->
+      <div class="flex items-center gap-1.5 overflow-x-auto custom-scroll pb-2 mb-4 text-xs font-medium">
+        <button class="category-filter px-3 py-1.5 rounded-full bg-brand-600 text-white whitespace-nowrap transition" data-category="all">
+          All Aisles
+        </button>
+        <button class="category-filter px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 whitespace-nowrap transition" data-category="Dairy & Eggs">
+          🥛 Dairy & Eggs
+        </button>
+        <button class="category-filter px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 whitespace-nowrap transition" data-category="Bakery">
+          🥖 Bakery & Bread
+        </button>
+        <button class="category-filter px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 whitespace-nowrap transition" data-category="Fresh Produce">
+          🥦 Fresh Fruits & Veg
+        </button>
+        <button class="category-filter px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 whitespace-nowrap transition" data-category="Pantry Staples">
+          🍚 Atta, Dal & Oils
+        </button>
+        <button class="category-filter px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 whitespace-nowrap transition" data-category="Beverages">
+          ☕ Tea, Coffee & Drinks
+        </button>
+        <button class="category-filter px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 whitespace-nowrap transition" data-category="Snacks & Drinks">
+          🍿 Snacks & Instant Food
+        </button>
+        <button class="category-filter px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 whitespace-nowrap transition" data-category="Household">
+          🧼 Cleaning & Home
+        </button>
+      </div>
+
+      <!-- Urgency Filters & Search Bar -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-        <!-- Urgency Filters -->
         <div class="flex items-center gap-1.5 overflow-x-auto custom-scroll pb-1 sm:pb-0 text-xs font-medium">
-          <button class="urgency-filter px-3 py-1.5 rounded-full bg-white/15 text-white border border-white/20 whitespace-nowrap" data-filter="all">All (<span id="count-all">0</span>)</button>
+          <button class="urgency-filter px-3 py-1.5 rounded-full bg-white/15 text-white border border-white/20 whitespace-nowrap" data-filter="all">Status: All (<span id="count-all">0</span>)</button>
           <button class="urgency-filter px-3 py-1.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 whitespace-nowrap" data-filter="critical">🚨 Critical (<span id="count-critical">0</span>)</button>
           <button class="urgency-filter px-3 py-1.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 whitespace-nowrap" data-filter="soon">⏳ Depleting (<span id="count-soon">0</span>)</button>
           <button class="urgency-filter px-3 py-1.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 whitespace-nowrap" data-filter="adequate">✅ In Stock (<span id="count-adequate">0</span>)</button>
         </div>
 
-        <!-- Search Bar -->
-        <div class="relative min-w-[200px]">
+        <!-- Live Search Bar -->
+        <div class="relative min-w-[240px]">
           <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
-          <input type="text" id="grocery-search" placeholder="Search milk, eggs, bread..." class="w-full pl-9 pr-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-500">
+          <input type="text" id="grocery-search" placeholder="Search 35+ items or live on Blinkit/Zepto..." class="w-full pl-9 pr-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-500">
         </div>
       </div>
 
-      <!-- Quick commerce banner -->
-      <div class="p-3 mb-4 rounded-xl bg-gradient-to-r from-purple-950/40 via-amber-950/30 to-emerald-950/40 border border-white/10 flex items-center justify-between gap-3">
+      <!-- Live Quick-Commerce Search Bridge (appears when user searches) -->
+      <div id="live-search-bridge" class="hidden mb-4 p-3.5 rounded-xl bg-gradient-to-r from-purple-950/40 via-amber-950/30 to-brand-950/40 border border-brand-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-            <i data-lucide="truck" class="w-4 h-4 text-brand-400"></i>
+          <div class="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center shrink-0">
+            <i data-lucide="globe" class="w-4 h-4 text-brand-400"></i>
           </div>
           <div class="text-xs">
-            <span class="font-bold text-white">Hyperlocal Quick-Commerce Sync</span>
-            <p class="text-gray-400 text-[11px]">Real-time pricing matched across Zepto, Blinkit, Instamart & Amazon</p>
+            <span class="font-bold text-white">Live Store Sourcing for: <strong id="live-search-query-text" class="text-brand-400">""</strong></span>
+            <p class="text-gray-400 text-[11px]">Can't find it in local inventory? Query dark stores directly or add custom item:</p>
           </div>
         </div>
-        <button id="auto-fill-btn-pantry" class="shrink-0 flex items-center gap-1 px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-semibold shadow transition">
+        <div class="flex flex-wrap items-center gap-2">
+          <a id="link-search-zepto" href="#" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-[11px] font-semibold flex items-center gap-1">
+            <span>Zepto Search</span>
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+          <a id="link-search-blinkit" href="#" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-[11px] font-semibold flex items-center gap-1">
+            <span>Blinkit Search</span>
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+          <button id="add-queried-item-btn" class="px-2.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-[11px] font-semibold flex items-center gap-1 shadow">
+            <i data-lucide="plus" class="w-3 h-3"></i>
+            <span>Track in Pantry</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Auto-fill Action Strip -->
+      <div class="p-3 mb-4 rounded-xl bg-gradient-to-r from-emerald-950/40 via-teal-950/30 to-brand-950/40 border border-white/10 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+            <i data-lucide="sparkles" class="w-4 h-4 text-brand-400"></i>
+          </div>
+          <div class="text-xs">
+            <span class="font-bold text-white">Predictive Depletion Queue</span>
+            <p class="text-gray-400 text-[11px]">Analyzes consumption velocity and automatically queues items running out within 36 hours</p>
+          </div>
+        </div>
+        <button id="auto-fill-btn-pantry" class="shrink-0 flex items-center gap-1 px-3.5 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-semibold shadow transition">
           <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-          <span class="hidden sm:inline">Auto-Fill</span> Shortages
+          <span>Auto-Fill Shortages</span>
         </button>
       </div>
 
       <!-- Groceries Grid -->
-      <div id="groceries-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+      <div id="groceries-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
         <!-- Rendered via JS -->
       </div>
     </div>
@@ -187,7 +268,7 @@
             <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-400"></i>
             Smart Replenishment Basket
           </h2>
-          <p class="text-xs text-gray-400">Items queued based on consumption run-out forecasts</p>
+          <p class="text-xs text-gray-400">Live multi-platform cost arbitrage across quick commerce dark stores</p>
         </div>
         <div class="flex items-center gap-2">
           <button id="auto-fill-basket-page-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600/20 hover:bg-brand-600/30 text-brand-400 text-xs font-semibold rounded-lg border border-brand-500/30 transition">
@@ -212,7 +293,7 @@
         </button>
       </div>
 
-      <!-- Basket Content Layout: Items on Left, Comparison on Right -->
+      <!-- Basket Content Layout -->
       <div id="basket-content-layout" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
         <!-- Basket Items List -->
@@ -232,7 +313,7 @@
             <div class="flex items-center justify-between mb-3">
               <div>
                 <span class="text-[10px] font-bold uppercase tracking-wider text-brand-400">Live Multi-Store Arbitrage</span>
-                <h3 class="font-bold text-white text-sm">Quick Commerce Comparison</h3>
+                <h3 class="font-bold text-white text-sm">Quick Commerce Price Comparison</h3>
               </div>
               <span class="text-[10px] bg-white/10 text-gray-300 px-2 py-0.5 rounded-md font-mono">Live Rates</span>
             </div>
@@ -355,6 +436,34 @@
     <i data-lucide="plus" class="w-6 h-6"></i>
   </button>
 
+  <!-- MODAL: STORE AISLES BROWSER -->
+  <div id="catalog-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="glass-card rounded-2xl p-5 max-w-2xl w-full max-h-[85vh] flex flex-col border border-brand-500/30 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <i data-lucide="store" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">Quick Commerce Store Directory</h3>
+            <p class="text-[11px] text-gray-400">Browse and import real catalog items from Zepto, Blinkit & Amazon</p>
+          </div>
+        </div>
+        <button id="close-catalog-modal-btn" class="text-gray-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="py-3 shrink-0">
+        <input type="text" id="catalog-search-input" placeholder="Search catalog: e.g. Ghee, Almonds, Chocolate, Cheese..." class="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-500">
+      </div>
+
+      <div id="catalog-items-list" class="flex-1 overflow-y-auto custom-scroll space-y-2 pr-1">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: ADD CUSTOM GROCERY ITEM -->
   <div id="add-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="glass-card rounded-2xl p-5 max-w-md w-full border border-white/20 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
@@ -385,9 +494,10 @@
               <option value="Dairy & Eggs">Dairy & Eggs</option>
               <option value="Bakery">Bakery</option>
               <option value="Fresh Produce">Fresh Produce</option>
+              <option value="Pantry Staples">Pantry Staples</option>
               <option value="Beverages">Beverages</option>
-              <option value="Staples & Grains">Staples & Grains</option>
-              <option value="Snacks & Condiments">Snacks & Condiments</option>
+              <option value="Snacks & Drinks">Snacks & Drinks</option>
+              <option value="Household">Household</option>
             </select>
           </div>
         </div>
@@ -412,7 +522,7 @@
         </div>
 
         <div>
-          <label class="block text-gray-300 font-medium mb-1">Preferred Quick Commerce Store</label>
+          <label class="block text-gray-300 font-medium mb-1">Preferred Sourcing Store</label>
           <div class="grid grid-cols-4 gap-2">
             <label class="flex items-center gap-1.5 p-2 rounded-lg bg-white/5 border border-white/10 cursor-pointer text-[11px]">
               <input type="radio" name="item-platform" value="Zepto" checked class="accent-brand-500">
@@ -473,157 +583,66 @@
 
   <!-- Application Logic -->
   <script>
-    // --- Initial Grocery Data matching Android Room DB Seeding ---
-    const INITIAL_GROCERIES = [
-      {
-        id: 1,
-        name: "Fresh Homogenised Toned Milk",
-        brand: "Amul Taaza",
-        category: "Dairy & Eggs",
-        unit: "1 L",
-        currentStockPercent: 0.12, // 12% left -> Critical
-        consumptionRatePerDay: 0.35,
-        lastPurchasedEpochMs: Date.now() - (2.5 * 24 * 3600 * 1000),
-        preferredPlatform: "Zepto",
-        estimatedPrice: 56.0,
-        averageIntervalDays: 3.0,
-        confidenceScore: 0.96
-      },
-      {
-        id: 2,
-        name: "Brown High-Protein Farm Eggs",
-        brand: "Eggoz",
-        category: "Dairy & Eggs",
-        unit: "6 pcs",
-        currentStockPercent: 0.18, // 1 egg left
-        consumptionRatePerDay: 0.28,
-        lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000),
-        preferredPlatform: "Blinkit",
-        estimatedPrice: 64.0,
-        averageIntervalDays: 3.5,
-        confidenceScore: 0.94
-      },
-      {
-        id: 3,
-        name: "Whole Wheat 100% Brown Bread",
-        brand: "English Oven",
-        category: "Bakery",
-        unit: "400 g",
-        currentStockPercent: 0.22,
-        consumptionRatePerDay: 0.30,
-        lastPurchasedEpochMs: Date.now() - (2.8 * 24 * 3600 * 1000),
-        preferredPlatform: "Swiggy Instamart",
-        estimatedPrice: 45.0,
-        averageIntervalDays: 3.2,
-        confidenceScore: 0.91
-      },
-      {
-        id: 4,
-        name: "Fresh Red Hybrid Tomatoes",
-        brand: "Farm Fresh",
-        category: "Fresh Produce",
-        unit: "1 kg",
-        currentStockPercent: 0.25,
-        consumptionRatePerDay: 0.20,
-        lastPurchasedEpochMs: Date.now() - (4 * 24 * 3600 * 1000),
-        preferredPlatform: "Zepto",
-        estimatedPrice: 42.0,
-        averageIntervalDays: 5.0,
-        confidenceScore: 0.88
-      },
-      {
-        id: 5,
-        name: "Fresh Robusta Bananas",
-        brand: "Direct Farm",
-        category: "Fresh Produce",
-        unit: "500 g",
-        currentStockPercent: 0.35,
-        consumptionRatePerDay: 0.33,
-        lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000),
-        preferredPlatform: "Blinkit",
-        estimatedPrice: 36.0,
-        averageIntervalDays: 3.0,
-        confidenceScore: 0.85
-      },
-      {
-        id: 6,
-        name: "Classic Instant Coffee Granules",
-        brand: "Nescafé",
-        category: "Beverages",
-        unit: "100 g",
-        currentStockPercent: 0.40,
-        consumptionRatePerDay: 0.05,
-        lastPurchasedEpochMs: Date.now() - (12 * 24 * 3600 * 1000),
-        preferredPlatform: "Amazon Fresh",
-        estimatedPrice: 195.0,
-        averageIntervalDays: 20.0,
-        confidenceScore: 0.95
-      },
-      {
-        id: 7,
-        name: "Sharbati Whole Wheat Atta",
-        brand: "Aashirvaad",
-        category: "Staples & Grains",
-        unit: "5 kg",
-        currentStockPercent: 0.45,
-        consumptionRatePerDay: 0.04,
-        lastPurchasedEpochMs: Date.now() - (15 * 24 * 3600 * 1000),
-        preferredPlatform: "Amazon Fresh",
-        estimatedPrice: 285.0,
-        averageIntervalDays: 25.0,
-        confidenceScore: 0.97
-      },
-      {
-        id: 8,
-        name: "Dahi Pouch Curd",
-        brand: "Amul Masti",
-        category: "Dairy & Eggs",
-        unit: "400 g",
-        currentStockPercent: 0.75,
-        consumptionRatePerDay: 0.30,
-        lastPurchasedEpochMs: Date.now() - (1 * 24 * 3600 * 1000),
-        preferredPlatform: "Zepto",
-        estimatedPrice: 35.0,
-        averageIntervalDays: 3.0,
-        confidenceScore: 0.90
-      },
-      {
-        id: 9,
-        name: "Fresh Red Onions",
-        brand: "Nashik Quality",
-        category: "Fresh Produce",
-        unit: "1 kg",
-        currentStockPercent: 0.60,
-        consumptionRatePerDay: 0.15,
-        lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000),
-        preferredPlatform: "Swiggy Instamart",
-        estimatedPrice: 48.0,
-        averageIntervalDays: 7.0,
-        confidenceScore: 0.89
-      },
-      {
-        id: 10,
-        name: "Fresh Tomato Ketchup Squeezo",
-        brand: "Kissan",
-        category: "Snacks & Condiments",
-        unit: "500 g",
-        currentStockPercent: 0.85,
-        consumptionRatePerDay: 0.03,
-        lastPurchasedEpochMs: Date.now() - (5 * 24 * 3600 * 1000),
-        preferredPlatform: "Blinkit",
-        estimatedPrice: 110.0,
-        averageIntervalDays: 30.0,
-        confidenceScore: 0.93
-      }
+    // --- Comprehensive Quick-Commerce Grocery Catalog (36 items across all aisles) ---
+    const COMPREHENSIVE_CATALOG = [
+      // 🥛 DAIRY, BREAD & EGGS
+      { id: 1, name: "Fresh Homogenised Toned Milk", brand: "Amul Taaza", category: "Dairy & Eggs", unit: "1 L", currentStockPercent: 0.12, consumptionRatePerDay: 0.35, lastPurchasedEpochMs: Date.now() - (2.5 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 56.0, averageIntervalDays: 3.0, confidenceScore: 0.96 },
+      { id: 2, name: "Full Cream Fresh Milk", brand: "Amul Gold", category: "Dairy & Eggs", unit: "1 L", currentStockPercent: 0.70, consumptionRatePerDay: 0.30, lastPurchasedEpochMs: Date.now() - (1 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 68.0, averageIntervalDays: 3.0, confidenceScore: 0.94 },
+      { id: 3, name: "Brown High-Protein Farm Eggs", brand: "Eggoz", category: "Dairy & Eggs", unit: "6 pcs", currentStockPercent: 0.18, consumptionRatePerDay: 0.28, lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 64.0, averageIntervalDays: 3.5, confidenceScore: 0.94 },
+      { id: 4, name: "Classic White Eggs Pack", brand: "Fresh Farm", category: "Dairy & Eggs", unit: "12 pcs", currentStockPercent: 0.60, consumptionRatePerDay: 0.20, lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 105.0, averageIntervalDays: 6.0, confidenceScore: 0.92 },
+      { id: 5, name: "Whole Wheat 100% Brown Bread", brand: "English Oven", category: "Bakery", unit: "400 g", currentStockPercent: 0.22, consumptionRatePerDay: 0.30, lastPurchasedEpochMs: Date.now() - (2.8 * 24 * 3600 * 1000), preferredPlatform: "Swiggy Instamart", estimatedPrice: 45.0, averageIntervalDays: 3.2, confidenceScore: 0.91 },
+      { id: 6, name: "Daily Fresh Sandwich Bread", brand: "Britannia", category: "Bakery", unit: "400 g", currentStockPercent: 0.50, consumptionRatePerDay: 0.25, lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 40.0, averageIntervalDays: 4.0, confidenceScore: 0.89 },
+      { id: 7, name: "Pasteurised Salted Table Butter", brand: "Amul", category: "Dairy & Eggs", unit: "100 g", currentStockPercent: 0.35, consumptionRatePerDay: 0.14, lastPurchasedEpochMs: Date.now() - (5 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 60.0, averageIntervalDays: 7.0, confidenceScore: 0.90 },
+      { id: 8, name: "Greek Natural Yogurt - Blueberry", brand: "Epigamia", category: "Dairy & Eggs", unit: "90 g", currentStockPercent: 0.10, consumptionRatePerDay: 0.50, lastPurchasedEpochMs: Date.now() - (1.7 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 50.0, averageIntervalDays: 2.0, confidenceScore: 0.93 },
+      { id: 9, name: "Dahi Pouch Curd", brand: "Amul Masti", category: "Dairy & Eggs", unit: "400 g", currentStockPercent: 0.40, consumptionRatePerDay: 0.30, lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 35.0, averageIntervalDays: 3.0, confidenceScore: 0.91 },
+      { id: 10, name: "Fresh Malai Paneer", brand: "Amul", category: "Dairy & Eggs", unit: "200 g", currentStockPercent: 0.20, consumptionRatePerDay: 0.25, lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 92.0, averageIntervalDays: 4.0, confidenceScore: 0.92 },
+      { id: 11, name: "Cheese Slices Pack", brand: "Amul", category: "Dairy & Eggs", unit: "200 g (10 pcs)", currentStockPercent: 0.45, consumptionRatePerDay: 0.10, lastPurchasedEpochMs: Date.now() - (5 * 24 * 3600 * 1000), preferredPlatform: "Swiggy Instamart", estimatedPrice: 145.0, averageIntervalDays: 10.0, confidenceScore: 0.88 },
+
+      // 🥦 FRESH FRUITS & VEGETABLES
+      { id: 12, name: "Fresh Red Hybrid Tomatoes", brand: "Farm Fresh", category: "Fresh Produce", unit: "1 kg", currentStockPercent: 0.25, consumptionRatePerDay: 0.20, lastPurchasedEpochMs: Date.now() - (4 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 42.0, averageIntervalDays: 5.0, confidenceScore: 0.88 },
+      { id: 13, name: "Fresh Red Onions", brand: "Nashik Mandi", category: "Fresh Produce", unit: "1 kg", currentStockPercent: 0.50, consumptionRatePerDay: 0.15, lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000), preferredPlatform: "Swiggy Instamart", estimatedPrice: 48.0, averageIntervalDays: 7.0, confidenceScore: 0.89 },
+      { id: 14, name: "Fresh Table Potatoes (Aloo)", brand: "Agra Gold", category: "Fresh Produce", unit: "1 kg", currentStockPercent: 0.65, consumptionRatePerDay: 0.12, lastPurchasedEpochMs: Date.now() - (4 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 38.0, averageIntervalDays: 8.0, confidenceScore: 0.91 },
+      { id: 15, name: "Fresh Robusta Bananas", brand: "Direct Farm", category: "Fresh Produce", unit: "500 g", currentStockPercent: 0.35, consumptionRatePerDay: 0.33, lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 36.0, averageIntervalDays: 3.0, confidenceScore: 0.85 },
+      { id: 16, name: "Shimla Royal Crisp Apples", brand: "Kashmir Orchard", category: "Fresh Produce", unit: "4 pcs (~500g)", currentStockPercent: 0.30, consumptionRatePerDay: 0.20, lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 120.0, averageIntervalDays: 5.0, confidenceScore: 0.87 },
+      { id: 17, name: "Fresh Green Coriander (Dhaniya)", brand: "Hydro Fresh", category: "Fresh Produce", unit: "100 g", currentStockPercent: 0.15, consumptionRatePerDay: 0.35, lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 15.0, averageIntervalDays: 3.0, confidenceScore: 0.90 },
+      { id: 18, name: "Fresh Ginger (Adrak)", brand: "Direct Farm", category: "Fresh Produce", unit: "200 g", currentStockPercent: 0.40, consumptionRatePerDay: 0.10, lastPurchasedEpochMs: Date.now() - (6 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 32.0, averageIntervalDays: 10.0, confidenceScore: 0.86 },
+      { id: 19, name: "Fresh Juicy Lemons (Nimbu)", brand: "Farm Fresh", category: "Fresh Produce", unit: "4 pcs", currentStockPercent: 0.25, consumptionRatePerDay: 0.25, lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000), preferredPlatform: "Swiggy Instamart", estimatedPrice: 24.0, averageIntervalDays: 4.0, confidenceScore: 0.88 },
+
+      // 🍚 PANTRY STAPLES, ATTA, OILS & DAL
+      { id: 20, name: "Shudh Whole Wheat Chakki Atta", brand: "Aashirvaad", category: "Pantry Staples", unit: "5 kg", currentStockPercent: 0.55, consumptionRatePerDay: 0.045, lastPurchasedEpochMs: Date.now() - (10 * 24 * 3600 * 1000), preferredPlatform: "Amazon Fresh", estimatedPrice: 249.0, averageIntervalDays: 22.0, confidenceScore: 0.95 },
+      { id: 21, name: "Sunlite Refined Sunflower Oil", brand: "Fortune", category: "Pantry Staples", unit: "1 L", currentStockPercent: 0.65, consumptionRatePerDay: 0.05, lastPurchasedEpochMs: Date.now() - (7 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 139.0, averageIntervalDays: 20.0, confidenceScore: 0.90 },
+      { id: 22, name: "Gold Pro Healthy Heart Oil", brand: "Saffola", category: "Pantry Staples", unit: "1 L", currentStockPercent: 0.30, consumptionRatePerDay: 0.05, lastPurchasedEpochMs: Date.now() - (14 * 24 * 3600 * 1000), preferredPlatform: "Amazon Fresh", estimatedPrice: 175.0, averageIntervalDays: 20.0, confidenceScore: 0.92 },
+      { id: 23, name: "Unpolished Toor / Arhar Dal", brand: "Tata Sampann", category: "Pantry Staples", unit: "1 kg", currentStockPercent: 0.35, consumptionRatePerDay: 0.07, lastPurchasedEpochMs: Date.now() - (9 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 179.0, averageIntervalDays: 14.0, confidenceScore: 0.93 },
+      { id: 24, name: "Super Basmati Rice", brand: "India Gate", category: "Pantry Staples", unit: "1 kg", currentStockPercent: 0.40, consumptionRatePerDay: 0.06, lastPurchasedEpochMs: Date.now() - (10 * 24 * 3600 * 1000), preferredPlatform: "Amazon Fresh", estimatedPrice: 165.0, averageIntervalDays: 16.0, confidenceScore: 0.94 },
+      { id: 25, name: "Vacuum Evaporated Iodised Salt", brand: "Tata Salt", category: "Pantry Staples", unit: "1 kg", currentStockPercent: 0.75, consumptionRatePerDay: 0.02, lastPurchasedEpochMs: Date.now() - (12 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 28.0, averageIntervalDays: 50.0, confidenceScore: 0.98 },
+      { id: 26, name: "Pure Turmeric Powder (Haldi)", brand: "Everest", category: "Pantry Staples", unit: "100 g", currentStockPercent: 0.50, consumptionRatePerDay: 0.025, lastPurchasedEpochMs: Date.now() - (20 * 24 * 3600 * 1000), preferredPlatform: "Swiggy Instamart", estimatedPrice: 38.0, averageIntervalDays: 40.0, confidenceScore: 0.95 },
+
+      // ☕ BEVERAGES, TEA & COFFEE
+      { id: 27, name: "Classic Instant Coffee Granules", brand: "Nescafé", category: "Beverages", unit: "50 g", currentStockPercent: 0.45, consumptionRatePerDay: 0.08, lastPurchasedEpochMs: Date.now() - (8 * 24 * 3600 * 1000), preferredPlatform: "Amazon Fresh", estimatedPrice: 168.0, averageIntervalDays: 14.0, confidenceScore: 0.92 },
+      { id: 28, name: "Gold 100% Pure Coffee", brand: "Bru", category: "Beverages", unit: "50 g", currentStockPercent: 0.70, consumptionRatePerDay: 0.07, lastPurchasedEpochMs: Date.now() - (4 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 195.0, averageIntervalDays: 14.0, confidenceScore: 0.91 },
+      { id: 29, name: "Gold Rich CTC Tea with Long Leaves", brand: "Tata Tea", category: "Beverages", unit: "250 g", currentStockPercent: 0.25, consumptionRatePerDay: 0.05, lastPurchasedEpochMs: Date.now() - (15 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 160.0, averageIntervalDays: 20.0, confidenceScore: 0.93 },
+      { id: 30, name: "Zero Sugar Can", brand: "Coca-Cola", category: "Beverages", unit: "300 ml", currentStockPercent: 0.20, consumptionRatePerDay: 0.35, lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 40.0, averageIntervalDays: 3.0, confidenceScore: 0.88 },
+
+      // 🍿 SNACKS, INSTANT FOOD & CONDIMENTS
+      { id: 31, name: "2-Minute Masala Instant Noodles", brand: "Maggi", category: "Snacks & Drinks", unit: "Pack of 4 (280g)", currentStockPercent: 0.25, consumptionRatePerDay: 0.25, lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000), preferredPlatform: "Zepto", estimatedPrice: 58.0, averageIntervalDays: 4.0, confidenceScore: 0.94 },
+      { id: 32, name: "India's Magic Masala Potato Chips", brand: "Lay's", category: "Snacks & Drinks", unit: "50 g", currentStockPercent: 0.20, consumptionRatePerDay: 0.40, lastPurchasedEpochMs: Date.now() - (2 * 24 * 3600 * 1000), preferredPlatform: "Swiggy Instamart", estimatedPrice: 20.0, averageIntervalDays: 3.0, confidenceScore: 0.84 },
+      { id: 33, name: "Aloo Bhujia Namkeen", brand: "Haldiram's", category: "Snacks & Drinks", unit: "150 g", currentStockPercent: 0.50, consumptionRatePerDay: 0.15, lastPurchasedEpochMs: Date.now() - (3 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 55.0, averageIntervalDays: 7.0, confidenceScore: 0.89 },
+      { id: 34, name: "Fresh Tomato Ketchup Squeezo", brand: "Kissan", category: "Snacks & Drinks", unit: "500 g", currentStockPercent: 0.65, consumptionRatePerDay: 0.03, lastPurchasedEpochMs: Date.now() - (10 * 24 * 3600 * 1000), preferredPlatform: "Amazon Fresh", estimatedPrice: 110.0, averageIntervalDays: 30.0, confidenceScore: 0.94 },
+
+      // 🧼 HOUSEHOLD & CLEANING
+      { id: 35, name: "Matic Top Load Liquid Detergent", brand: "Surf Excel", category: "Household", unit: "1 L", currentStockPercent: 0.70, consumptionRatePerDay: 0.03, lastPurchasedEpochMs: Date.now() - (9 * 24 * 3600 * 1000), preferredPlatform: "Amazon Fresh", estimatedPrice: 225.0, averageIntervalDays: 30.0, confidenceScore: 0.97 },
+      { id: 36, name: "Lemon Dishwash Liquid Gel", brand: "Vim", category: "Household", unit: "500 ml", currentStockPercent: 0.30, consumptionRatePerDay: 0.05, lastPurchasedEpochMs: Date.now() - (14 * 24 * 3600 * 1000), preferredPlatform: "Blinkit", estimatedPrice: 115.0, averageIntervalDays: 20.0, confidenceScore: 0.93 }
     ];
 
     // State
-    let groceries = JSON.parse(localStorage.getItem('gp_groceries')) || INITIAL_GROCERIES;
+    let groceries = JSON.parse(localStorage.getItem('gp_groceries')) || COMPREHENSIVE_CATALOG;
     let basket = JSON.parse(localStorage.getItem('gp_basket')) || [];
     let orders = JSON.parse(localStorage.getItem('gp_orders')) || [];
     let householdMultiplier = parseFloat(localStorage.getItem('gp_multiplier') || '1.0');
     let weekendSurge = localStorage.getItem('gp_weekend_surge') !== 'false';
     let currentFilter = 'all';
+    let currentCategory = 'all';
+    let currentPlatformFilter = 'all';
     let searchQuery = '';
 
     function saveState() {
@@ -642,7 +661,7 @@
       const isWeekend = (date.getDay() === 0 || date.getDay() === 6);
       
       const surge = (weekendSurge && isWeekend && 
-        (item.category === 'Dairy & Eggs' || item.category === 'Bakery' || item.category === 'Snacks & Condiments'))
+        (item.category === 'Dairy & Eggs' || item.category === 'Bakery' || item.category === 'Snacks & Drinks'))
         ? 1.35 : 1.0;
 
       const effectiveDailyRate = item.consumptionRatePerDay * householdMultiplier * surge;
@@ -752,18 +771,26 @@
       } else {
         navBasketDot.classList.add('hidden');
       }
+      document.getElementById('total-groceries-count').textContent = groceries.length;
     }
 
     // --- Render Pantry Screen ---
     function renderPantry() {
       let counts = { all: 0, critical: 0, soon: 0, adequate: 0 };
-      
+      let platformCounts = { all: 0, Zepto: 0, Blinkit: 0, 'Swiggy Instamart': 0, 'Amazon Fresh': 0 };
+
       const evaluated = groceries.map(item => {
         const pred = evaluatePrediction(item);
         counts.all++;
         if (pred.urgency === 'CRITICAL') counts.critical++;
         else if (pred.urgency === 'DEPLETING_SOON') counts.soon++;
         else counts.adequate++;
+
+        platformCounts.all++;
+        if (platformCounts[item.preferredPlatform] !== undefined) {
+          platformCounts[item.preferredPlatform]++;
+        }
+
         return { item, pred };
       });
 
@@ -773,26 +800,60 @@
       document.getElementById('count-soon').textContent = counts.soon;
       document.getElementById('count-adequate').textContent = counts.adequate;
 
+      document.getElementById('count-platform-all').textContent = platformCounts.all;
+      document.getElementById('count-platform-zepto').textContent = platformCounts.Zepto;
+      document.getElementById('count-platform-blinkit').textContent = platformCounts.Blinkit;
+      document.getElementById('count-platform-swiggy').textContent = platformCounts['Swiggy Instamart'];
+      document.getElementById('count-platform-amazon').textContent = platformCounts['Amazon Fresh'];
+
       // Filter
       const filtered = evaluated.filter(({ item, pred }) => {
+        // Platform filter
+        if (currentPlatformFilter !== 'all' && item.preferredPlatform !== currentPlatformFilter) {
+          return false;
+        }
+
+        // Category aisle filter
+        if (currentCategory !== 'all' && item.category !== currentCategory) {
+          return false;
+        }
+
+        // Urgency status filter
         if (currentFilter === 'critical' && pred.urgency !== 'CRITICAL') return false;
         if (currentFilter === 'soon' && pred.urgency !== 'DEPLETING_SOON') return false;
         if (currentFilter === 'adequate' && (pred.urgency === 'CRITICAL' || pred.urgency === 'DEPLETING_SOON')) return false;
 
+        // Search query
         if (searchQuery) {
           const q = searchQuery.toLowerCase();
           return item.name.toLowerCase().includes(q) || 
                  item.brand.toLowerCase().includes(q) || 
-                 item.category.toLowerCase().includes(q);
+                 item.category.toLowerCase().includes(q) ||
+                 item.preferredPlatform.toLowerCase().includes(q);
         }
         return true;
       });
 
+      // Live search bridge handling
+      const bridge = document.getElementById('live-search-bridge');
+      if (searchQuery && searchQuery.trim().length > 1) {
+        bridge.classList.remove('hidden');
+        document.getElementById('live-search-query-text').textContent = `"${searchQuery}"`;
+        document.getElementById('link-search-zepto').href = `https://www.zeptonow.com/search?q=${encodeURIComponent(searchQuery)}`;
+        document.getElementById('link-search-blinkit').href = `https://blinkit.com/s/?q=${encodeURIComponent(searchQuery)}`;
+      } else {
+        bridge.classList.add('hidden');
+      }
+
       if (filtered.length === 0) {
         groceriesGrid.innerHTML = `
-          <div class="col-span-2 glass-card rounded-2xl p-8 text-center text-gray-400">
+          <div class="col-span-full glass-card rounded-2xl p-8 text-center text-gray-400">
             <i data-lucide="package-open" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
-            <p class="text-sm">No grocery items matching your criteria.</p>
+            <p class="text-sm font-semibold text-white">No items found matching this filter</p>
+            <p class="text-xs text-gray-400 mt-1">Search dark-stores live on Zepto or Blinkit via the buttons above, or tap below to add it:</p>
+            <button onclick="prefillAndOpenModal('${searchQuery.replace(/'/g, "\\'")}')" class="mt-3 px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold">
+              + Track "${searchQuery || 'New Item'}" in Pantry
+            </button>
           </div>
         `;
         lucide.createIcons();
@@ -808,6 +869,11 @@
 
         const inBasket = basket.find(b => b.groceryId === item.id);
 
+        let platformBadgeColor = 'bg-purple-950/40 text-purple-300 border-purple-500/30';
+        if (item.preferredPlatform === 'Blinkit') platformBadgeColor = 'bg-amber-950/40 text-amber-300 border-amber-500/30';
+        else if (item.preferredPlatform === 'Swiggy Instamart') platformBadgeColor = 'bg-orange-950/40 text-orange-300 border-orange-500/30';
+        else if (item.preferredPlatform === 'Amazon Fresh') platformBadgeColor = 'bg-sky-950/40 text-sky-300 border-sky-500/30';
+
         return `
           <div class="glass-card-interactive rounded-2xl p-4 flex flex-col justify-between">
             <div>
@@ -822,7 +888,7 @@
                   <div class="flex items-center gap-2 mt-1">
                     <span class="text-xs font-extrabold text-white">₹${item.estimatedPrice}</span>
                     <span class="text-[10px] text-gray-400">/ ${item.unit}</span>
-                    <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">${item.preferredPlatform}</span>
+                    <span class="text-[9px] px-1.5 py-0.5 rounded border font-semibold ${platformBadgeColor}">${item.preferredPlatform}</span>
                   </div>
                 </div>
 
@@ -842,7 +908,7 @@
                 </div>
               </div>
 
-              <!-- ML confidence tag -->
+              <!-- ML metrics tag -->
               <div class="flex items-center justify-between text-[10px] text-gray-400 py-1">
                 <span>ML Confidence: <strong class="text-brand-400">${pred.confidence}%</strong></span>
                 <span>Refill cycle: ~${item.averageIntervalDays}d</span>
@@ -944,7 +1010,7 @@
       renderBasket();
       
       if (addedCount > 0) {
-        confetti({ particleCount: 60, spread: 60, origin: { y: 0.8 } });
+        confetti({ particleCount: 70, spread: 70, origin: { y: 0.8 } });
         showToast(`Auto-queued ${addedCount} depleted items into basket!`);
       } else {
         showToast(`Pantry is well stocked! No emergency shortages detected.`);
@@ -977,6 +1043,7 @@
             <div class="flex items-center gap-2 mt-0.5">
               <span class="text-xs font-bold text-emerald-400">₹${item.unitPrice}</span>
               <span class="text-[10px] text-gray-400">(${item.unit})</span>
+              <span class="text-[9px] px-1.5 rounded bg-white/5 text-gray-300">${item.platform}</span>
             </div>
           </div>
 
@@ -1146,14 +1213,84 @@
       lucide.createIcons();
     }
 
-    // --- Gemini AI Advisor Heuristics & Assistant ---
+    // --- Catalog Modal Browser ---
+    const catalogModal = document.getElementById('catalog-modal');
+    const catalogSearchInput = document.getElementById('catalog-search-input');
+    const catalogItemsList = document.getElementById('catalog-items-list');
+
+    function renderCatalogModal(search = '') {
+      const q = search.toLowerCase();
+      const filtered = COMPREHENSIVE_CATALOG.filter(c => 
+        c.name.toLowerCase().includes(q) || 
+        c.brand.toLowerCase().includes(q) || 
+        c.category.toLowerCase().includes(q) ||
+        c.preferredPlatform.toLowerCase().includes(q)
+      );
+
+      catalogItemsList.innerHTML = filtered.map(c => {
+        const alreadyInPantry = groceries.some(g => g.name === c.name);
+
+        return `
+          <div class="glass-card rounded-xl p-3 flex items-center justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="text-[10px] uppercase font-bold text-gray-400">${c.brand}</span>
+                <span class="text-[10px] text-gray-500">•</span>
+                <span class="text-[10px] text-gray-400">${c.category}</span>
+                <span class="text-[9px] px-1.5 py-0.2 rounded bg-white/5 text-gray-300">${c.preferredPlatform}</span>
+              </div>
+              <h4 class="font-bold text-white text-xs">${c.name}</h4>
+              <span class="text-xs font-bold text-emerald-400">₹${c.estimatedPrice} <span class="text-gray-400 font-normal">/ ${c.unit}</span></span>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              ${alreadyInPantry 
+                ? '<span class="text-[10px] text-emerald-400 font-semibold px-2 py-1 bg-emerald-500/10 rounded-lg">✓ In Pantry</span>'
+                : `<button onclick="importCatalogItem(${c.id})" class="px-2.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-[11px] font-semibold flex items-center gap-1">
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                    <span>Add to Pantry</span>
+                   </button>`
+              }
+              <button onclick="addToBasket(${c.id})" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold">
+                + Cart
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    window.importCatalogItem = function(id) {
+      const item = COMPREHENSIVE_CATALOG.find(c => c.id === id);
+      if (!item) return;
+
+      if (!groceries.some(g => g.name === item.name)) {
+        groceries.unshift({
+          ...item,
+          id: Date.now(),
+          currentStockPercent: 0.8,
+          lastPurchasedEpochMs: Date.now()
+        });
+        saveState();
+        renderPantry();
+        renderCatalogModal(catalogSearchInput.value);
+        showToast(`Added ${item.name} to Pantry!`);
+      }
+    };
+
+    window.prefillAndOpenModal = function(name) {
+      document.getElementById('item-name').value = name || '';
+      document.getElementById('add-modal').classList.remove('hidden');
+    };
+
+    // --- Gemini AI Advisor ---
     const chatStream = document.getElementById('ai-chat-stream');
 
     function appendChatMessage(sender, text) {
       const msgDiv = document.createElement('div');
-      msgDiv.className = sender === 'user' 
-        ? 'flex justify-end' 
-        : 'flex justify-start';
+      msgDiv.className = sender === 'user' ? 'flex justify-end' : 'flex justify-start';
 
       const bubbleClass = sender === 'user'
         ? 'bg-brand-600 text-white rounded-2xl rounded-tr-none'
@@ -1172,13 +1309,12 @@
     function generateAIResponse(prompt) {
       appendChatMessage('user', prompt);
 
-      // Show typing indicator
       const typingDiv = document.createElement('div');
       typingDiv.className = 'flex justify-start';
       typingDiv.innerHTML = `
         <div class="glass-card p-3 rounded-2xl text-xs text-gray-400 flex items-center gap-2">
           <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin text-brand-400"></i>
-          <span>Gemini analyzing pantry velocity...</span>
+          <span>Gemini synthesizing catalog inventory...</span>
         </div>
       `;
       chatStream.appendChild(typingDiv);
@@ -1192,44 +1328,40 @@
         const lower = prompt.toLowerCase();
         if (lower.includes('weekend') || lower.includes('brunch')) {
           reply = `🍳 <strong>Weekend Consumption Forecast:</strong><br><br>
-            • <strong>High Runout Risk:</strong> Amul Taaza Milk (12% remaining) and Farm Eggs (18% remaining) will fully deplete by Saturday 10:00 AM due to your 1.35x weekend breakfast surge.<br>
-            • <strong>Recommendation:</strong> Queue 2x Milk and 1x Eggs now via <strong>Zepto (9m)</strong> to lock in dark-store breakfast inventory before morning surge stockouts.`;
+            • <strong>High Runout Risk:</strong> Amul Taaza Milk (12% left), Eggoz Farm Eggs (18% left), and English Oven Brown Bread (22% left) are nearing depletion.<br>
+            • <strong>Recommendation:</strong> Queue them now via <strong>Zepto (9 mins)</strong> to lock in morning breakfast inventory before dark store stockouts occur.`;
         } else if (lower.includes('split') || lower.includes('store')) {
           reply = `🛒 <strong>Quick Commerce Arbitrage Analysis:</strong><br><br>
-            • <strong>Zepto / Blinkit:</strong> Optimal for urgent perishables (Milk @ ₹56, Eggs @ ₹64, Bread @ ₹45). Dark store transit takes &lt;12 minutes.<br>
-            • <strong>Amazon Fresh:</strong> Optimal for heavy staples (Aashirvaad 5kg Atta @ ₹285, Nescafé @ ₹195) due to 7% bulk margin savings.<br>
-            • <strong>Estimated Savings:</strong> Splitting staples vs perishables saves you approximately <strong>₹85-₹120</strong> per weekly cycle.`;
+            • <strong>Zepto / Blinkit:</strong> Optimal for urgent perishables (Milk @ ₹56, Eggs @ ₹64, Tomatoes @ ₹42). Dark store transit takes &lt;11 minutes.<br>
+            • <strong>Amazon Fresh:</strong> Optimal for heavy staples (Aashirvaad 5kg Atta @ ₹249, Saffola Oil @ ₹175) due to 7% bulk margin savings.<br>
+            • <strong>Estimated Savings:</strong> Splitting staples vs perishables saves you approximately <strong>₹85-₹120</strong> per weekly replenishment run.`;
         } else if (lower.includes('spoilage') || lower.includes('freshness')) {
           reply = `🥗 <strong>Freshness & Shelf-Life Advisory:</strong><br><br>
-            • <strong>Dairy (Amul Milk / Dahi):</strong> Store at 4°C. Once opened, consume within 48 hours to preserve protein integrity.<br>
-            • <strong>Tomatoes:</strong> Keep out of direct sunlight at room temperature; chilling slows flavor maturation.<br>
+            • <strong>Dairy (Amul Milk / Paneer):</strong> Store at 4°C. Consume within 48 hours of opening.<br>
+            • <strong>Tomatoes & Onions:</strong> Store in ventilated wire baskets away from direct sunlight; avoid chilling tomatoes to prevent mealiness.<br>
             • <strong>Bananas:</strong> Currently at 35% stock; separate stems with foil to reduce ethylene gas dispersal and delay browning.`;
         } else {
           reply = `💡 <strong>Pantry Optimization Insight:</strong><br><br>
-            Based on current household calibration (<strong>${householdMultiplier}x</strong> velocity multiplier), your primary bottleneck is <strong>Dairy & Eggs</strong>.<br>
-            • Auto-ordering every 3 days prevents rush delivery fees.<br>
-            • Using <strong>Zepto</strong> for &lt;₹200 carts and <strong>Amazon Fresh</strong> for &gt;₹499 carts guarantees zero delivery surcharge on all refills.`;
+            Tracking <strong>${groceries.length} quick-commerce staples</strong> across Zepto, Blinkit, Instamart, and Amazon Fresh.<br>
+            • High turnover items: <strong>Dairy, Eggs, and Fresh Produce</strong> account for 75% of your replenishment orders.<br>
+            • Tip: Group orders above ₹199 on Zepto or Blinkit to eliminate the ₹25 delivery surcharge.`;
         }
 
         appendChatMessage('assistant', reply);
       }, 700);
     }
 
-    // Initial greeting
     appendChatMessage('assistant', '👋 Hello! I am your Gemini Grocery Strategist. I continuously monitor your pantry depletion rates, predict runouts before your kitchen runs dry, and find the lowest price across Zepto, Blinkit, Instamart, and Amazon Fresh.');
 
-    // --- Event Listeners & Navigation ---
+    // --- Navigation & Event Handlers ---
 
-    // Bottom Tabs Navigation
+    // Bottom Navigation
     document.querySelectorAll('.nav-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.target;
-        
-        // Hide all views
         document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
         document.getElementById(target).classList.remove('hidden');
 
-        // Reset tab styles
         document.querySelectorAll('.nav-tab').forEach(t => {
           t.classList.remove('text-brand-400', 'font-semibold');
           t.classList.add('text-gray-400');
@@ -1243,12 +1375,11 @@
       });
     });
 
-    // Header basket button navigation
     document.getElementById('header-basket-btn').addEventListener('click', () => {
       document.querySelector('.nav-tab[data-target="view-basket"]').click();
     });
 
-    // Household multiplier buttons
+    // Household multiplier
     document.querySelectorAll('.household-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.household-btn').forEach(b => {
@@ -1274,13 +1405,39 @@
       } else {
         weekendBtn.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl border transition text-xs font-medium bg-white/5 text-gray-400 border-white/10';
         weekendStatus.className = 'w-2 h-2 rounded-full bg-gray-500';
-        showToast("Weekend Surge disabled (standard run-rate)");
+        showToast("Weekend Surge disabled");
       }
       saveState();
       renderPantry();
     });
 
-    // Urgency filters
+    // Platform Sourcing Filters
+    document.querySelectorAll('.platform-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.platform-filter').forEach(b => {
+          b.classList.remove('bg-white/20', 'text-white');
+        });
+        btn.classList.add('bg-white/20', 'text-white');
+        currentPlatformFilter = btn.dataset.platform;
+        renderPantry();
+      });
+    });
+
+    // Category Aisles Filters
+    document.querySelectorAll('.category-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.category-filter').forEach(b => {
+          b.classList.remove('bg-brand-600', 'text-white');
+          b.classList.add('bg-white/5', 'text-gray-300');
+        });
+        btn.classList.remove('bg-white/5', 'text-gray-300');
+        btn.classList.add('bg-brand-600', 'text-white');
+        currentCategory = btn.dataset.category;
+        renderPantry();
+      });
+    });
+
+    // Urgency Status Filters
     document.querySelectorAll('.urgency-filter').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.urgency-filter').forEach(b => {
@@ -1292,18 +1449,22 @@
       });
     });
 
-    // Search bar
+    // Search bar input
     document.getElementById('grocery-search').addEventListener('input', (e) => {
       searchQuery = e.target.value;
       renderPantry();
     });
 
-    // Auto-fill buttons
+    document.getElementById('add-queried-item-btn').addEventListener('click', () => {
+      prefillAndOpenModal(searchQuery);
+    });
+
+    // Auto-fill
     document.getElementById('auto-fill-btn-pantry').addEventListener('click', autoFillShortages);
     document.getElementById('auto-fill-basket-page-btn').addEventListener('click', autoFillShortages);
     document.getElementById('empty-state-autofill-btn').addEventListener('click', autoFillShortages);
 
-    // Clear Basket
+    // Clear buttons
     document.getElementById('clear-basket-btn').addEventListener('click', () => {
       basket = [];
       saveState();
@@ -1312,12 +1473,25 @@
       showToast("Basket cleared");
     });
 
-    // Clear Orders
     document.getElementById('clear-orders-btn').addEventListener('click', () => {
       orders = [];
       saveState();
       renderOrders();
       showToast("Order history cleared");
+    });
+
+    // Store Aisles Catalog Modal
+    document.getElementById('open-catalog-btn').addEventListener('click', () => {
+      renderCatalogModal();
+      catalogModal.classList.remove('hidden');
+    });
+
+    document.getElementById('close-catalog-modal-btn').addEventListener('click', () => {
+      catalogModal.classList.add('hidden');
+    });
+
+    catalogSearchInput.addEventListener('input', (e) => {
+      renderCatalogModal(e.target.value);
     });
 
     // AI Chat Input
@@ -1335,14 +1509,13 @@
       if (e.key === 'Enter') sendAiBtn.click();
     });
 
-    // AI Prompt Chips
     document.querySelectorAll('.ai-prompt-chip').forEach(chip => {
       chip.addEventListener('click', () => {
         generateAIResponse(chip.dataset.prompt);
       });
     });
 
-    // Add Item Modal
+    // Custom Item Modal
     const addModal = document.getElementById('add-modal');
     const openAddModalBtn = document.getElementById('open-add-modal-btn');
     const floatingAddBtn = document.getElementById('floating-add-btn');
@@ -1389,9 +1562,8 @@
     });
 
     // Order Modal Close
-    const orderModal = document.getElementById('order-modal');
     document.getElementById('close-order-modal-btn').addEventListener('click', () => {
-      orderModal.classList.add('hidden');
+      document.getElementById('order-modal').classList.add('hidden');
       document.querySelector('.nav-tab[data-target="view-pantry"]').click();
     });
 
